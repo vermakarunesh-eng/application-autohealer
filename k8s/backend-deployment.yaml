@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: autohealer
   labels:
     app: backend
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: REGISTRY/autopilot-backend:latest
+          image: gcr.io/auto-app-healer/autopilot-backend:latest
           ports:
             - containerPort: 8000
           readinessProbe:
@@ -36,6 +37,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
+  namespace: autohealer
 spec:
   selector:
     app: backend

@@ -5,6 +5,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: crash-simulator
+  namespace: autohealer
   labels:
     app: crash-simulator
 spec:
@@ -27,6 +28,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bad-deploy-simulator
+  namespace: autohealer
   labels:
     app: bad-deploy-simulator
 spec:

@@ -1,8 +1,13 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: autohealer
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: autopilot-agent
-  namespace: default
+  namespace: autohealer
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -30,31 +35,66 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: autopilot-agent
-    namespace: default
+    namespace: autohealer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: autopilot-agent
+  name: autopilot-isolator
+  namespace: autohealer
   labels:
-    app: autopilot-agent
+    app: autopilot-isolator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: autopilot-agent
+      app: autopilot-isolator
   template:
     metadata:
       labels:
-        app: autopilot-agent
+        app: autopilot-isolator
     spec:
       serviceAccountName: autopilot-agent
       containers:
-        - name: agent
-          image: REGISTRY/autopilot-agent:latest
+        - name: agent-isolator
+          image: gcr.io/auto-app-healer/autopilot-agent:latest
+          command: ["python", "agent_isolator.py"]
           env:
             - name: NAMESPACE
-              value: "default"
+              value: "autohealer"
+            - name: POLL_INTERVAL
+              value: "30"
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: anthropic-secret
+                  key: api_key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autopilot-repairer
+  namespace: autohealer
+  labels:
+    app: autopilot-repairer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autopilot-repairer
+  template:
+    metadata:
+      labels:
+        app: autopilot-repairer
+    spec:
+      serviceAccountName: autopilot-agent
+      containers:
+        - name: agent-repairer
+          image: gcr.io/auto-app-healer/autopilot-agent:latest
+          command: ["python", "agent_repairer.py"]
+          env:
+            - name: NAMESPACE
+              value: "autohealer"
             - name: POLL_INTERVAL
               value: "30"
             - name: ANTHROPIC_API_KEY
