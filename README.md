@@ -24,20 +24,6 @@ Self-healing Kubernetes demo on GKE. Two agents watch the cluster and use Claude
 
 Run one at a time, revert before trying the next.
 
-## Optional: crash-simulator
-
-A second workload to show the `restart_pod` path, deploy only when demoing:
-```bash
-kubectl apply -f k8s/simulate-crash.yaml
-kubectl delete -f k8s/simulate-crash.yaml
-```
-
-## Automated validation
-
-```bash
-cd agent && python validate_simulators.py
-```
-
 ## Useful commands
 
 ```bash
