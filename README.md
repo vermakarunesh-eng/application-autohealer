@@ -1,5 +1,5 @@
 # Application Autohealer
-
+karunesh code
 Self-healing Kubernetes demo on GKE. Two agents watch the cluster and use Claude to diagnose and fix failures.
 
 - `autopilot-isolator` — finds unhealthy pods, isolates them, flags the deployment.
