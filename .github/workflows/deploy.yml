@@ -7,7 +7,7 @@ on:
     types: [completed]
     branches: [main]
 
-    
+
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
@@ -34,6 +34,8 @@ jobs:
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
+
+          
 
       - name: Create Anthropic API key secret
         run: |
