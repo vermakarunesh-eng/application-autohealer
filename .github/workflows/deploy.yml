@@ -13,7 +13,7 @@ env:
   REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
-  NAMESPACE: autohealer
+  NAMESPACE: default
 
 jobs:
   deploy:
@@ -35,16 +35,16 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-          
 
-      - name: Create Anthropic API key secret
-        run: |
-          printf '%s' "${{ secrets.ANTHROPIC_API_KEY }}" > /tmp/anthropic-api-key
-          kubectl create secret generic anthropic-secret \
-            --from-file=api_key=/tmp/anthropic-api-key \
-            --namespace=${{ env.NAMESPACE }} \
-            --dry-run=client -o yaml | kubectl apply -f -
-          rm -f /tmp/anthropic-api-key
+
+      # - name: Create Anthropic API key secret
+      #   run: |
+      #     printf '%s' "${{ secrets.ANTHROPIC_API_KEY }}" > /tmp/anthropic-api-key
+      #     kubectl create secret generic anthropic-secret \
+      #       --from-file=api_key=/tmp/anthropic-api-key \
+      #       --namespace=${{ env.NAMESPACE }} \
+      #       --dry-run=client -o yaml | kubectl apply -f -
+      #     rm -f /tmp/anthropic-api-key
 
       - name: Substitute image tags in manifests
         run: |
