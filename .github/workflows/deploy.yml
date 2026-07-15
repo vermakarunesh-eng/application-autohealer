@@ -8,6 +8,7 @@ on:
     branches: [main]
 
 
+    
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
