@@ -12,7 +12,7 @@ env:
   REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
-  NAMESPACE: default
+  NAMESPACE: autohealer
 
 jobs:
   deploy:
